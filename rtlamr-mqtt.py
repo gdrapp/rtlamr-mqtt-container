@@ -5,7 +5,10 @@ import os
 import sys
 
 MQTT_HOST = os.environ.get("MQTT_HOST") or sys.exit("MQTT_HOST environment variable not set")
-MQTT_PORT = os.environ.get("MQTT_PORT") or sys.exit("MQTT_PORT environment variable not set")
+try:
+    MQTT_PORT = int(os.environ.get("MQTT_PORT")) or sys.exit("MQTT_PORT environment variable not set")
+except ValueError as e:
+    sys.exit("MQTT_PORT environment variable not an number")
 MQTT_USERNAME = os.environ.get("MQTT_USERNAME") or sys.exit("MQTT_USERNAME environment variable not set")
 MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD") or sys.exit("MQTT_PASSWORD environment variable not set")
 MQTT_BASE_TOPIC = os.environ.get("MQTT_BASE_TOPIC", "rtlamr")
