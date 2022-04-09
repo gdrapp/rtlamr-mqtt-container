@@ -4,7 +4,7 @@ ENV CGO_ENABLED=0
 
 RUN apk update && apk add --no-cache git
 
-RUN go get -v github.com/bemasher/rtlamr
+RUN go install -v github.com/bemasher/rtlamr@latest
 
 FROM python:3-alpine
 

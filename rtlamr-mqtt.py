@@ -8,11 +8,12 @@ MQTT_HOST = os.environ.get("MQTT_HOST") or sys.exit("MQTT_HOST environment varia
 try:
     MQTT_PORT = int(os.environ.get("MQTT_PORT")) or sys.exit("MQTT_PORT environment variable not set")
 except ValueError as e:
-    sys.exit("MQTT_PORT environment variable not an number")
+    sys.exit("MQTT_PORT environment variable not a number")
 MQTT_USERNAME = os.environ.get("MQTT_USERNAME") or sys.exit("MQTT_USERNAME environment variable not set")
 MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD") or sys.exit("MQTT_PASSWORD environment variable not set")
 MQTT_BASE_TOPIC = os.environ.get("MQTT_BASE_TOPIC", "rtlamr")
 METER_ID = os.environ.get("METER_ID") or sys.exit("METER_ID environment variable not set")
+RTL_TCP_SERVER = os.environ.get("RTL_TCP_SERVER", "localhost:1234")
 
 def send_mqtt(topic, payload):
     try:
@@ -24,7 +25,7 @@ def send_mqtt(topic, payload):
 
 def main():
     print("Starting rtlamr")
-    with Popen(["/usr/local/bin/rtlamr", "-server=localhost:1234", f"-filterid={METER_ID}", "-format=json"],stdout=PIPE, bufsize=1, universal_newlines=True) as proc:
+    with Popen(["/usr/local/bin/rtlamr", f"-server={RTL_TCP_SERVER}", f"-filterid={METER_ID}", "-format=json"],stdout=PIPE, bufsize=1, universal_newlines=True) as proc:
         while proc.poll() == None:
             line = proc.stdout.readline()
             if not line:
